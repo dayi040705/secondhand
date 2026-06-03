@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录 - 二手交易平台</title>
+    <!-- Quartz 主题 (深色玻璃) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.0/dist/quartz/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .login-card {
+            background: rgba(30, 30, 46, 0.8);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+        .login-card:hover {
+            transform: translateY(-5px);
+        }
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .login-header i {
+            font-size: 3rem;
+            color: #20c997;
+            background: rgba(32, 201, 151, 0.1);
+            padding: 0.75rem;
+            border-radius: 2rem;
+        }
+        .login-header h1 {
+            font-size: 1.8rem;
+            margin-top: 1rem;
+            font-weight: 500;
+        }
+        .form-control {
+            background-color: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+        .form-control:focus {
+            background-color: rgba(0, 0, 0, 0.6);
+            border-color: #20c997;
+            box-shadow: 0 0 0 0.25rem rgba(32, 201, 151, 0.25);
+            color: #fff;
+        }
+        .btn-login {
+            background: #20c997;
+            border: none;
+            font-weight: 500;
+            padding: 0.6rem;
+            border-radius: 2rem;
+            transition: all 0.2s;
+        }
+        .btn-login:hover {
+            background: #198f6e;
+            transform: scale(1.02);
+        }
+        .register-link {
+            text-align: center;
+            margin-top: 1.2rem;
+            color: #aaa;
+        }
+        .register-link a {
+            color: #20c997;
+            text-decoration: none;
+        }
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+        .error-message {
+            background: rgba(220, 53, 69, 0.2);
+            border-left: 3px solid #dc3545;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.75rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="login-card p-4 p-md-5">
+                <div class="login-header">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                    <h1>欢迎回来</h1>
+                    <p class="text-white-50">登录你的二手交易平台账号</p>
+                </div>
+
+                <form th:action="@{/login}" method="post">
+                    <div class="mb-4">
+                        <label class="form-label"><i class="bi bi-person"></i> 用户名</label>
+                        <input type="text" name="username" class="form-control" placeholder="请输入用户名" required autofocus>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label"><i class="bi bi-lock"></i> 密码</label>
+                        <input type="password" name="password" class="form-control" placeholder="请输入密码" required>
+                    </div>
+                    <button type="submit" class="btn btn-login w-100 text-white"><i class="bi bi-unlock"></i> 登录</button>
+                </form>
+
+                <div class="register-link">
+                    还没有账号？ <a th:href="@{/register}">立即注册</a>
+                </div>
+
+                <div th:if="${error}" class="error-message text-center">
+                    <i class="bi bi-exclamation-triangle-fill me-1"></i> <span th:text="${error}"></span>
+                </div>
+                <div class="footer">
+                    校园二手交易平台 · 安全便捷
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

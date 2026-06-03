@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>我的发布 - 二手交易平台</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.0/dist/quartz/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        .card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-radius: 1rem;
+            overflow: hidden;
+            height: 100%;  /* 确保同一行卡片高度一致 */
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.3);
+        }
+        .product-img {
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+        }
+        .btn-outline-danger:hover {
+            background-color: #dc3545;
+            color: white;
+        }
+        /* 描述文本：限制3行，鼠标悬停展开全部 */
+        .description-text {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .description-text:hover {
+            -webkit-line-clamp: unset;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 0.25rem;
+            padding: 0.25rem;
+            margin: -0.25rem;
+            z-index: 1;
+            position: relative;
+        }
+        /* 卡片内容区使用 flex 列，让描述区域自动撑开 */
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        .description-wrapper {
+            flex: 1;  /* 占满剩余空间，将价格和按钮推到底部 */
+        }
+        .price-and-buttons {
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body class="bg-dark">
+<div class="container py-4">
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-transparent mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/"><i class="bi bi-house-heart"></i> 二手交易平台</a>
+            <div class="ms-auto">
+                <span class="navbar-text me-3 text-light" th:text="'欢迎，' + ${session.username}"></span>
+                <a href="/message/inbox" class="btn btn-outline-info me-2 position-relative">
+                    <i class="bi bi-envelope"></i> 消息
+                    <span th:if="${unreadCount > 0}" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" th:text="${unreadCount}"></span>
+                </a>
+                <a href="/publish" class="btn btn-outline-primary me-2"><i class="bi bi-plus-circle"></i> 发布商品</a>
+                <a href="/logout" class="btn btn-outline-danger"><i class="bi bi-box-arrow-right"></i> 退出</a>
+            </div>
+        </div>
+    </nav>
+
+    <h2 class="mb-4 text-light"><i class="bi bi-grid"></i> 我发布的商品</h2>
+
+    <div class="row g-4">
+        <div class="col-md-6 col-lg-4" th:each="product : ${products}">
+            <div class="card bg-secondary bg-opacity-25 text-light shadow">
+                <!-- 商品图片 -->
+                <img th:if="${product.imagePath}" th:src="${product.imagePath}" class="product-img" th:alt="${product.title}">
+                <img th:unless="${product.imagePath}" src="https://via.placeholder.com/300x200?text=暂无图片" class="product-img">
+
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${product.title}"></h5>
+                    <div class="description-wrapper">
+                        <p class="card-text text-white-50 description-text" th:text="${product.description}"></p>
+                    </div>
+                    <div class="price-and-buttons">
+                        <p class="text-danger fw-bold h4" th:text="'¥' + ${product.price}"></p>
+                        <div class="d-flex justify-content-between mt-2">
+                            <a th:href="@{'/edit/' + ${product.id}}" class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil"></i> 编辑</a>
+                            <a th:href="@{'/delete/' + ${product.id}}" class="btn btn-sm btn-outline-danger" onclick="return confirm('确定要删除这件商品吗？')"><i class="bi bi-trash"></i> 删除</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:if="${products.empty}" class="col-12">
+            <div class="alert alert-info text-center">您还没有发布任何商品，去 <a href="/publish" class="alert-link">发布一个</a> 吧！</div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
